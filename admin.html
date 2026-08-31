@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin</title>
+
+     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+     
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+             
+            --primary-blue: #0ea5e9;
+             
+            --primary-blue-light: rgba(14, 165, 233, 0.15);
+            --accent-orange: #f97316;
+             
+            --accent-orange-light: rgba(249, 115, 22, 0.15);
+
+             
+            --bg-light: #f8fafc;
+             
+            --panel-bg: #ffffff;
+             
+            --border-line: #cbd5e1;
+             
+
+             
+            --text-dark: #0f172a;
+             
+            --text-muted: #64748b;
+             
+
+             
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+         
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+         
+        .sidebar {
+            width: 280px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            position: fixed;
+            height: 100vh;
+            border-right: 1px solid var(--border-line);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar-header {
+            padding: 30px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-line);
+        }
+
+        .logo-da {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-da i {
+            color: var(--primary-blue);
+        }
+
+        .close-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-link i {
+            font-size: 18px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .menu-link:hover {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .menu-link.active {
+            background-color: var(--primary-blue-light);
+            color: var(--primary-blue);
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .sidebar-bottom {
+            padding: 20px 0 30px 0;
+            border-top: 1px solid var(--border-line);
+        }
+
+        .logout-btn {
+            color: var(--danger);
+        }
+
+        .logout-btn:hover {
+            background-color: var(--danger-light);
+            color: var(--danger);
+            border-left-color: var(--danger);
+        }
+
+         
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            width: calc(100% - 280px);
+        }
+
+        .top-header {
+            background: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-line);
+            position: sticky;
+            top: 0;
+            z-index: 998;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: var(--primary-blue-light);
+            color: var(--primary-blue);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 10px 14px;
+            border-radius: 0;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .greeting h1 {
+            font-size: 22px;
+            color: var(--text-dark);
+            font-weight: 800;
+        }
+
+        .welcome-name {
+            color: var(--accent-orange);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: right;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--primary-blue);
+            font-weight: 800;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 700;
+            display: block;
+        }
+
+         
+        .view-section {
+            display: none;
+            padding: 40px;
+            flex-direction: column;
+            gap: 30px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .view-section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            font-weight: 800;
+            border-left: 4px solid var(--accent-orange);
+            padding-left: 15px;
+        }
+
+        .scroll-anim {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+
+        .scroll-anim.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+         
+        .stat-card,
+        .content-box {
+            background: #ffffff;
+            border-radius: 0;
+             
+            border: 1px solid var(--border-line);
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.03);
+             
+        }
+
+        .stat-card {
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 4px 4px 0 rgba(14, 165, 233, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .stat-details h3 {
+            font-size: 26px;
+            color: var(--text-dark);
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-details p {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .content-box {
+            padding: 30px;
+            width: 100%;
+        }
+
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
+         
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            background: #f1f5f9;
+            border: 1px solid var(--border-line);
+            border-radius: 0;
+             
+            padding: 15px 20px;
+            font-size: 15px;
+            color: var(--text-dark);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group select option {
+            background: #ffffff;
+            color: var(--text-dark);
+        }
+
+        .input-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 20px;
+            top: -10px;
+            background: #ffffff;
+            padding: 0 5px;
+            color: var(--primary-blue);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            border-color: var(--primary-blue);
+            background: #ffffff;
+            box-shadow: 2px 2px 0 rgba(14, 165, 233, 0.15);
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+            font-weight: 700;
+        }
+
+        .input-error {
+            border-color: var(--danger) !important;
+            background: var(--danger-light) !important;
+        }
+
+        .success-msg {
+            color: var(--success);
+            background: var(--success-light);
+            padding: 15px;
+            border-radius: 0;
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            display: none;
+            text-align: center;
+            border: 1px solid var(--success);
+        }
+
+         
+        .main-btn,
+        .action-btn {
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 0;
+        }
+
+        .main-btn {
+            background: var(--primary-blue);
+            color: white;
+            padding: 16px 24px;
+            width: 100%;
+            font-size: 15px;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 4px 4px 0 rgba(14, 165, 233, 0.2);
+        }
+
+        .main-btn:hover {
+            background: var(--accent-orange);
+            box-shadow: 4px 4px 0 rgba(249, 115, 22, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .action-btn {
+            background: #ffffff;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            padding: 8px 16px;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-blue);
+            color: #fff;
+        }
+
+         
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-blue);
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            min-width: 700px;
+        }
+
+        th,
+        td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-line);
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 12px;
+            border-top: 1px solid var(--border-line);
+        }
+
+        td {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .status {
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 0;
+            border: 1px solid transparent;
+        }
+
+        .status.delivered {
+            background: var(--success-light);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .status.transit {
+            background: var(--warning-light);
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .status.alert {
+            background: var(--danger-light);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+         
+        .timeline {
+            margin-top: 25px;
+            border-left: 2px solid var(--border-line);
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .timeline-item {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-orange);
+            border: 2px solid #ffffff;
+        }
+
+        .timeline-item h4 {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        .timeline-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .time-badge {
+            font-size: 11px;
+            background: #f1f5f9;
+            padding: 3px 8px;
+            color: var(--text-dark);
+            margin-right: 8px;
+            border: 1px solid var(--border-line);
+        }
+
+         
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .menu-toggle,
+            .close-btn {
+                display: block;
+            }
+
+            .two-col-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 15px 20px;
+            }
+
+            .view-section {
+                padding: 20px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .greeting h1 {
+                font-size: 18px;
+            }
+
+            .content-box {
+                padding: 20px;
+                overflow-x: scroll;
+            }
+
+            .stat-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+          .logo-img {
+            width: 150px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .logo-da {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo-da i {
+            font-size: 28px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+         
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-header">
+                   <div class="logo-da">
+                        <img src="./asset/SkyBlue_Logo.webp" alt="Company Logo" class="logo-img">
+                    </div>
+                    <button class="close-btn" id="closeSidebar"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li><a class="menu-link active" data-target="overview-view"><i class="fa-solid fa-globe"></i> Global
+                            Operations</a></li>
+                    <li><a class="menu-link" data-target="er-view"><i class="fa-solid fa-screwdriver-wrench"></i>
+                            Service Requests</a></li>
+                    <li><a class="menu-link" data-target="fleet-view"><i class="fa-solid fa-truck-fast"></i> Technician
+                            Fleet</a></li>
+                    <li><a class="menu-link" data-target="wards-view"><i class="fa-solid fa-building-circle-check"></i>
+                            Installations</a></li>
+                    <li><a class="menu-link" data-target="inventory-view"><i class="fa-solid fa-microchip"></i> Spare
+                            Parts</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bottom">
+                <a href="login.html" class="menu-link logout-btn"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</a>
+            </div>
+        </aside>
+
+         
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="openSidebar"><i class="fa-solid fa-bars-staggered"></i></button>
+                    <div class="greeting">
+                        <h1 id="page-title">Global Operations <span class="welcome-name">| Admin</span></h1>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="user-info">
+                            <span class="user-role">Service Manager</span>
+                            <span class="user-email">admin@medigear.com</span>
+                        </div>
+                        <div class="user-avatar"><i class="fa-solid fa-circle-user"
+                                style="color: var(--text-muted); font-size: 40px;"></i></div>
+                    </div>
+                </div>
+            </header>
+
+             
+            <div id="overview-view" class="view-section active">
+                <section class="stats-grid scroll-anim">
+                    <div class="stat-card">
+                        <div class="stat-icon"
+                            style="background: var(--primary-blue-light); color: var(--primary-blue);"><i
+                                class="fa-solid fa-hospital"></i></div>
+                        <div class="stat-details">
+                            <h3>482</h3>
+                            <p>Active Partner Hospitals</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--success-light); color: var(--success);"><i
+                                class="fa-solid fa-arrow-trend-up"></i></div>
+                        <div class="stat-details">
+                            <h3>99.8%</h3>
+                            <p>Machine Uptime</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"
+                            style="background: var(--accent-orange-light); color: var(--accent-orange);"><i
+                                class="fa-solid fa-users-gear"></i></div>
+                        <div class="stat-details">
+                            <h3>156</h3>
+                            <p>Engineers on Field</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="two-col-grid">
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Maintenance Requests (Last 7 Days)</h2>
+                        <div class="chart-container"><canvas id="volumeChart"></canvas></div>
+                    </section>
+
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Equipment Status Matrix</h2>
+                        <div class="progress-container">
+                            <div class="progress-header"><span>MRI Scanners (Operational)</span> <span>95%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header"><span>CT Scanners (Operational)</span> <span>88%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 88%; background: var(--warning);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header"><span>Ventilators (Operational)</span> <span>98%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 98%; background: var(--success);"></div>
+                            </div>
+                        </div>
+
+                        <h2 class="section-title" style="margin-top: 40px;">Critical Breakdown Alerts</h2>
+                        <ul style="list-style: none;">
+                            <li
+                                style="padding: 15px 0; border-bottom: 1px solid var(--border-line); display: flex; gap: 15px;">
+                                <i class="fa-solid fa-triangle-exclamation"
+                                    style="color: var(--danger); font-size: 20px;"></i>
+                                <div>
+                                    <strong style="color: var(--text-dark); display: block;">Cooling System
+                                        Failure</strong>
+                                    <span style="font-size: 13px; color: var(--text-muted);">Apollo Main Branch - MRI
+                                        Room B.</span>
+                                </div>
+                            </li>
+                            <li style="padding: 15px 0; display: flex; gap: 15px;">
+                                <i class="fa-solid fa-plug-circle-xmark"
+                                    style="color: var(--warning); font-size: 20px;"></i>
+                                <div>
+                                    <strong style="color: var(--text-dark); display: block;">Power Fluctuation</strong>
+                                    <span style="font-size: 13px; color: var(--text-muted);">City Care Hosp - Ventilator
+                                        Unit 4.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+
+             
+            <div id="er-view" class="view-section">
+                <section class="stats-grid scroll-anim">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--danger-light); color: var(--danger);"><i
+                                class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-details">
+                            <h3>08</h3>
+                            <p>Critical Breakdowns</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--warning-light); color: var(--warning);"><i
+                                class="fa-solid fa-clock-rotate-left"></i></div>
+                        <div class="stat-details">
+                            <h3>15</h3>
+                            <p>Pending Tickets</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="two-col-grid">
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Dispatch Technician Form</h2>
+                        <form id="serviceForm" novalidate>
+                            <div id="formSuccess" class="success-msg">Ticket Created & Technician Dispatched!</div>
+
+                            <div class="input-group">
+                                <label>Hospital Name</label>
+                                <input type="text" id="hospName" required>
+                                <div class="error-msg" id="nameError">Hospital Name is required.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Equipment Priority</label>
+                                <select id="prioritySelect" required>
+                                    <option value="" selected disabled>Select priority level...</option>
+                                    <option value="1">P1 - Life Support (Immediate)</option>
+                                    <option value="2">P2 - Critical Diagnostics (2 Hrs)</option>
+                                    <option value="3">P3 - Standard AMC (24 Hrs)</option>
+                                </select>
+                                <div class="error-msg" id="triageError">Please select priority.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Issue Description</label>
+                                <textarea id="issueDesc" required></textarea>
+                            </div>
+
+                            <button type="submit" class="main-btn">Create Service Ticket <i
+                                    class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </section>
+
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Live Dispatch Feed</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">14:30</span> Tech Reached Site</h4>
+                                <p>Ramesh (Senior Tech) has arrived at Fortis Hospital for CT Scanner repair.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">13:15</span> Issue Resolved</h4>
+                                <p>Ticket #TK-9920 (Defibrillator Battery) closed successfully.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">11:00</span> New Ticket Assigned</h4>
+                                <p>Anita P. assigned to Global Health City for routine ventilator AMC.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">09:45</span> Spare Part Approved</h4>
+                                <p>Requested motherboard for X-Ray unit approved and dispatched.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+             
+            <div id="fleet-view" class="view-section">
+                <section class="stats-grid scroll-anim">
+                    <div class="stat-card">
+                        <div class="stat-icon"
+                            style="background: var(--primary-blue-light); color: var(--primary-blue);"><i
+                                class="fa-solid fa-users"></i></div>
+                        <div class="stat-details">
+                            <h3>45</h3>
+                            <p>Total Engineers</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--success-light); color: var(--success);"><i
+                                class="fa-solid fa-truck-fast"></i></div>
+                        <div class="stat-details">
+                            <h3>32</h3>
+                            <p>Currently on Field</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--warning-light); color: var(--warning);"><i
+                                class="fa-solid fa-mug-hot"></i></div>
+                        <div class="stat-details">
+                            <h3>13</h3>
+                            <p>On Standby / Leave</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="two-col-grid">
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Active Engineers on Field</h2>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tech ID / Name</th>
+                                        <th>Specialization</th>
+                                        <th>Live Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>ENG-101</strong> (Ramesh K.)</td>
+                                        <td>Imaging Systems</td>
+                                        <td><span class="status transit">En Route</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ENG-104</strong> (Anita P.)</td>
+                                        <td>Life Support</td>
+                                        <td><span class="status delivered">Available</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ENG-108</strong> (Vikram)</td>
+                                        <td>ICU Setups</td>
+                                        <td><span class="status alert">Working</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ENG-112</strong> (Suresh M.)</td>
+                                        <td>Lab Equipment</td>
+                                        <td><span class="status alert">Working</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ENG-115</strong> (Priya D.)</td>
+                                        <td>General AMC</td>
+                                        <td><span class="status transit">En Route</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Vehicle Maintenance Schedule</h2>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vehicle Reg.</th>
+                                        <th>Assigned To</th>
+                                        <th>Service Due</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>TN-01-AB-1234</strong></td>
+                                        <td>Ramesh K.</td>
+                                        <td><span style="color: var(--danger); font-weight: 700;">Overdue (2
+                                                Days)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>TN-02-CD-5678</strong></td>
+                                        <td>Anita P.</td>
+                                        <td><span style="color: var(--warning); font-weight: 700;">In 5 Days</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>TN-09-EF-9012</strong></td>
+                                        <td>Vikram</td>
+                                        <td><span style="color: var(--success); font-weight: 700;">Clear (Next
+                                                Month)</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+             
+            <div id="wards-view" class="view-section">
+                <section class="content-box scroll-anim">
+                    <h2 class="section-title">Upcoming Equipment Installations</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Est. Date</th>
+                                    <th>Equipment / Order ID</th>
+                                    <th>Target Hospital</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>12 Nov, 08:00 AM</strong></td>
+                                    <td>MRI Siemens v4 (#ORD-881)</td>
+                                    <td>Apollo Main Branch</td>
+                                    <td><span class="status delivered">Hardware Ready</span></td>
+                                    <td><a href="404.html" class="action-btn">Assign Team</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>15 Nov, 11:30 AM</strong></td>
+                                    <td>Ventilator Batch (#ORD-902)</td>
+                                    <td>City Care Hospital</td>
+                                    <td><span class="status transit">In Transit</span></td>
+                                    <td><a href="404.html" class="action-btn">Track</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>18 Nov, 09:00 AM</strong></td>
+                                    <td>X-Ray Machine (#ORD-915)</td>
+                                    <td>Global Health City</td>
+                                    <td><span class="status alert">Site Prep Pending</span></td>
+                                    <td><a href="404.html" class="action-btn">Follow Up</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>20 Nov, 02:00 PM</strong></td>
+                                    <td>Ultrasound System (#ORD-940)</td>
+                                    <td>Mehta Clinic</td>
+                                    <td><span class="status delivered">Hardware Ready</span></td>
+                                    <td><a href="404.html" class="action-btn">Assign Team</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>22 Nov, 10:00 AM</strong></td>
+                                    <td>Patient Monitors (#ORD-955)</td>
+                                    <td>Fortis Hospital</td>
+                                    <td><span class="status transit">Customs Clearance</span></td>
+                                    <td><a href="404.html" class="action-btn">Track</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <div class="two-col-grid" style="margin-top: -10px;">
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Site Preparation Status</h2>
+                        <div class="progress-container">
+                            <div class="progress-header"><span>Apollo (MRI Shielding Room)</span> <span>100%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%; background: var(--success);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header"><span>City Care (Oxygen Pipelines)</span> <span>75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%; background: var(--primary-blue);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-header"><span>Global Health (Lead Walls)</span> <span>40%</span></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%; background: var(--warning);"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Calibration Approvals</h2>
+                        <ul style="list-style: none;">
+                            <li
+                                style="padding: 15px 0; border-bottom: 1px solid var(--border-line); display: flex; gap: 15px; align-items: center;">
+                                <i class="fa-solid fa-circle-check" style="color: var(--success); font-size: 20px;"></i>
+                                <div>
+                                    <strong style="color: var(--text-dark); display: block;">Defibrillator Unit
+                                        5</strong>
+                                    <span style="font-size: 13px; color: var(--text-muted);">Calibrated & Certified for
+                                        Use.</span>
+                                </div>
+                            </li>
+                            <li
+                                style="padding: 15px 0; border-bottom: 1px solid var(--border-line); display: flex; gap: 15px; align-items: center;">
+                                <i class="fa-solid fa-circle-check" style="color: var(--success); font-size: 20px;"></i>
+                                <div>
+                                    <strong style="color: var(--text-dark); display: block;">ECG Machine (Batch
+                                        A)</strong>
+                                    <span style="font-size: 13px; color: var(--text-muted);">Passed QA Testing.</span>
+                                </div>
+                            </li>
+                            <li style="padding: 15px 0; display: flex; gap: 15px; align-items: center;">
+                                <i class="fa-solid fa-spinner fa-spin"
+                                    style="color: var(--warning); font-size: 20px;"></i>
+                                <div>
+                                    <strong style="color: var(--text-dark); display: block;">CT Scanner
+                                        Calibration</strong>
+                                    <span style="font-size: 13px; color: var(--text-muted);">Testing in progress (Est. 2
+                                        hrs).</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+
+             
+            <div id="inventory-view" class="view-section">
+                <section class="stats-grid scroll-anim">
+                    <div class="stat-card">
+                        <div class="stat-icon"
+                            style="background: var(--primary-blue-light); color: var(--primary-blue);"><i
+                                class="fa-solid fa-boxes-stacked"></i></div>
+                        <div class="stat-details">
+                            <h3>14,592</h3>
+                            <p>Total Spare Parts</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--danger-light); color: var(--danger);"><i
+                                class="fa-solid fa-battery-quarter"></i></div>
+                        <div class="stat-details">
+                            <h3>12</h3>
+                            <p>Parts Low on Stock</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--success-light); color: var(--success);"><i
+                                class="fa-solid fa-truck-ramp-box"></i></div>
+                        <div class="stat-details">
+                            <h3>05</h3>
+                            <p>Incoming Shipments</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="two-col-grid">
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Critical Shortage Alerts</h2>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Part Name</th>
+                                        <th>Part Code</th>
+                                        <th>Stock</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>MRI Helium Pump</strong></td>
+                                        <td>#PRT-990</td>
+                                        <td><span style="color: var(--danger); font-weight: bold;">2 Units</span></td>
+                                        <td><a href="404.html" class="action-btn">Reorder</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ventilator O2 Sensors</strong></td>
+                                        <td>#PRT-221</td>
+                                        <td><span style="color: var(--danger); font-weight: bold;">5 Units</span></td>
+                                        <td><a href="404.html" class="action-btn">Reorder</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>X-Ray Tubes</strong></td>
+                                        <td>#PRT-404</td>
+                                        <td><span style="color: var(--danger); font-weight: bold;">Out of Stock</span>
+                                        </td>
+                                        <td><a href="404.html" class="action-btn">Urgent Order</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ECG Electrodes (Box)</strong></td>
+                                        <td>#PRT-115</td>
+                                        <td><span style="color: var(--warning); font-weight: bold;">15 Units</span></td>
+                                        <td><a href="404.html" class="action-btn">Reorder</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="content-box scroll-anim">
+                        <h2 class="section-title">Recent Supplier Deliveries</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">Today</span> Siemens AG (Germany)</h4>
+                                <p>Delivered 50x MRI Coils. Quality check pending in Warehouse A.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">Yesterday</span> Philips Healthcare</h4>
+                                <p>Delivered 200x Patient Monitor cables. Added to active inventory.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">10 Nov</span> GE Medical</h4>
+                                <p>Received ultrasound probes (Batch #882). Ready for dispatch.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4><span class="time-badge">08 Nov</span> Local Supplier</h4>
+                                <p>Received 500x standard power cables and fuses.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+ 
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        function openSidebar() { sidebar.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeSidebar() { sidebar.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow = 'auto'; }
+
+        openSidebarBtn.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+ 
+        const menuLinks = document.querySelectorAll('.sidebar-menu .menu-link');
+        const views = document.querySelectorAll('.view-section');
+        const pageTitle = document.getElementById('page-title');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                if (this.classList.contains('active')) return;
+                menuLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                views.forEach(v => v.classList.remove('active'));
+
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+
+                let titleText = this.innerText.trim();
+                pageTitle.innerHTML = `${titleText} <span class="welcome-name">| Admin</span>`;
+
+                if (window.innerWidth <= 1024) closeSidebar();
+
+ 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                triggerAnimations();
+            });
+        });
+
+ 
+        const ctx = document.getElementById('volumeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Service Requests',
+                    data: [12, 18, 15, 22, 28, 19, 14],
+                    borderColor: '#0ea5e9', // Primary Blue
+                    backgroundColor: 'rgba(14, 165, 233, 0.15)', // Blue Light
+                    borderWidth: 3, fill: true, tension: 0.4,
+                    pointBackgroundColor: '#f97316', // Orange
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2, pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#64748b' } },
+                    x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                }
+            }
+        });
+
+ 
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('show'); });
+        }, { threshold: 0.1 });
+
+        function triggerAnimations() {
+            const animElements = document.querySelectorAll('.scroll-anim');
+            animElements.forEach(el => { el.classList.remove('show'); observer.observe(el); });
+        }
+        triggerAnimations();
+
+ 
+        document.getElementById('serviceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const hName = document.getElementById('hospName');
+            const priority = document.getElementById('prioritySelect');
+            const nameError = document.getElementById('nameError');
+            const triageError = document.getElementById('triageError');
+            const formSuccess = document.getElementById('formSuccess');
+
+            let isValid = true;
+            hName.classList.remove('input-error'); priority.classList.remove('input-error');
+            nameError.style.display = 'none'; triageError.style.display = 'none'; formSuccess.style.display = 'none';
+
+            if (hName.value.trim().length < 3) { hName.classList.add('input-error'); nameError.style.display = 'block'; isValid = false; }
+            if (priority.value === '') { priority.classList.add('input-error'); triageError.style.display = 'block'; isValid = false; }
+
+            if (isValid) {
+                const btn = this.querySelector('button');
+                const orgText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+                setTimeout(() => {
+                    formSuccess.style.display = 'block';
+                    window.location.href = '404.html'
+                    btn.innerHTML = orgText;
+                    this.reset();
+                    setTimeout(() => formSuccess.style.display = 'none', 3000);
+                }, 800);
+            }
+        });
+    </script>
+</body>
+
+</html>

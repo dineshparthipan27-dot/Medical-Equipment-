@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <link rel="stylesheet" href="services.css">
+    <link rel="stylesheet" href="Medical.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+             
+            <a href="index.html" class="logo-container">
+                <img src="./asset/SkyBlue_Logo.webp" alt="Company Logo" class="logo-img">
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>  
+                <a href="about.html">About</a>
+                <a href="services.html" class="nav-active">Services</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+             
+            <div class="nav-actions">
+                <a href="#cart" class="cart-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="login.html" class="login-btn"><i class="fa-solid fa-user-doctor"></i> Login</a>
+
+                 
+                <button class="mobile-toggle" id="mobile-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="index.html" class="nav-active"><i class="fa-solid fa-house"></i> Home</a>  
+            <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+            <a href="services.html"><i class="fa-solid fa-stethoscope"></i> Services</a>
+            <a href="blog.html"><i class="fa-solid fa-blog"></i> Blog</a>
+            <a href="contact.html"><i class="fa-solid fa-headset"></i> Contact</a>
+            <a href="login.html" class="mobile-login-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        </div>
+    </header>
+
+     
+    <section id="service-hero" class="service-hero">
+        <div class="container hero-flex">
+
+             
+            <div class="hero-content">
+                <div class="hero-badge gsap-text">
+                    <i class="fa-solid fa-star"></i> Premium Medical Care
+                </div>
+                <h1 class="gsap-text">Elevating <span class="text-orange">Healthcare</span> Standards</h1>
+                <p class="gsap-text">We provide end-to-end medical equipment solutions. From procurement to lifelong
+                    maintenance, our biomedical experts ensure your facility runs without interruptions.</p>
+                <div class="gsap-text btn-wrapper">
+                    <a href="404.html" class="btn-primary">Explore Services <i class="fa-solid fa-arrow-down"></i></a>
+                </div>
+            </div>
+
+             
+            <div class="hero-visual">
+                <div class="css-animated-image">
+                     
+                    <img src="./asset/h3.webp" alt="Premium Medical Services" class="floating-img">
+
+                     
+                    <div class="bg-glow"></div>
+                    <div class="floating-dot dot-1"></div>
+                    <div class="floating-dot dot-2"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+     
+    <section id="supply" class="zigzag-section">
+        <div class="container">
+
+             
+            <div class="zigzag-row">
+                <div class="row-visual" data-aos="fade-up">
+                    <div class="image-wrapper shadow-teal">
+                        <img src="./asset/h4.webp" alt="Equipment Sourcing">
+                    </div>
+                </div>
+                <div class="row-content" data-aos="fade-up">
+                    <h2 class="section-heading">Global Equipment <span class="text-teal">Sourcing</span></h2>
+                    <p>We partner directly with world-renowned manufacturers to bring you 100% genuine, FDA & CE
+                        approved medical machineries. From advanced MRI scanners to basic mobility aids, we handle the
+                        complete procurement process.</p>
+                    <ul class="clean-list">
+                        <li><i class="fa-solid fa-check"></i> Direct Manufacturer Partnerships</li>
+                        <li><i class="fa-solid fa-check"></i> 100% Genuine & Certified Products</li>
+                        <li><i class="fa-solid fa-check"></i> Safe & Insured Transit</li>
+                    </ul>
+                </div>
+            </div>
+
+             
+            <div class="zigzag-row reverse-row">
+                <div class="row-visual" data-aos="fade-up">
+                    <div class="image-wrapper shadow-orange">
+                        <img src="./asset/h2.webp" alt="Clinical Setup">
+                    </div>
+                </div>
+                <div class="row-content" data-aos="fade-up">
+                    <h2 class="section-heading">Professional Clinical <span class="text-orange">Setup</span></h2>
+                    <p>Delivering the equipment is only half the job. Our team of certified biomedical engineers handles
+                        the careful unboxing, precise assembly, and clinical calibration of the machines directly at
+                        your facility.</p>
+                    <ul class="clean-list">
+                        <li><i class="fa-solid fa-check"></i> Expert Biomedical Engineers</li>
+                        <li><i class="fa-solid fa-check"></i> Precise Clinical Calibration</li>
+                        <li><i class="fa-solid fa-check"></i> Comprehensive Staff Training</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+     
+    <section id="calibration" class="calibration-section">
+        <div class="container">
+
+             
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>Biomedical <span class="highlight text-orange">Calibration</span></h2>
+                <p>Ensuring your life-saving machines deliver 100% accurate clinical readings every single time.</p>
+            </div>
+
+             
+            <div class="interactive-list">
+
+                 
+                <div class="list-row" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-microscope row-icon"></i>
+                    <div class="row-text">
+                        <h3>Diagnostic Tools</h3>
+                        <p>Precision calibration for Microscopes, Blood Analyzers & Centrifuges.</p>
+                    </div>
+
+                </div>
+
+                 
+                <div class="list-row" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-lungs row-icon"></i>
+                    <div class="row-text">
+                        <h3>Life Support Systems</h3>
+                        <p>Airflow & pressure tuning for Ventilators and Oxygen Concentrators.</p>
+                    </div>
+
+                </div>
+
+                 
+                <div class="list-row" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-desktop row-icon"></i>
+                    <div class="row-text">
+                        <h3>Patient Monitors</h3>
+                        <p>Signal testing for ECG machines, BP Apparatus, and Multipara monitors.</p>
+                    </div>
+
+                </div>
+
+                 
+                <div class="list-row" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fa-solid fa-kit-medical row-icon"></i>
+                    <div class="row-text">
+                        <h3>Surgical Equipments</h3>
+                        <p>Safety checks for Electrocautery machines and OT lights.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+     
+    <section id="maintenance" class="maintenance-section bg-white">
+        <div class="container">
+
+             
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>24/7 Maintenance & <span class="text-teal">Repair</span></h2>
+                <p>Minimizing downtime with rapid response biomedical teams and proactive support.</p>
+            </div>
+
+             
+            <div class="minimal-grid">
+
+                 
+                <div class="grid-node" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fa-solid fa-stopwatch node-icon"></i>
+                    <h4>Rapid Response</h4>
+                    <p>Guaranteed technician arrival within 4 hours for emergency breakdowns in your hospital.</p>
+                </div>
+
+                 
+                <div class="grid-node" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fa-solid fa-screwdriver-wrench node-icon"></i>
+                    <h4>On-Site Repair</h4>
+                    <p>Fully equipped mobile toolkits to diagnose and fix complex issues directly at your clinic.</p>
+                </div>
+
+                 
+                <div class="grid-node" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fa-solid fa-gears node-icon"></i>
+                    <h4>Original Spares</h4>
+                    <p>We strictly use OEM certified replacement parts to ensure longevity and patient safety.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+     
+    <section id="consulting" class="consulting-section">
+        <div class="container">
+
+             
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>Hospital Setup <span class="text-orange">Consulting</span></h2>
+                <p>From architectural blueprints to the final clinical execution, we guide you every step of the way to
+                    build a world-class healthcare facility.</p>
+            </div>
+
+             
+            <div class="setup-pathway">
+
+                 
+                <div class="path-step" data-aos="fade-up" data-aos-delay="100">
+                    <div class="step-icon-box">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </div>
+                    <h4>1. Blueprint</h4>
+                    <p>Space planning, OT layout design, and structural requirements.</p>
+                </div>
+
+                 
+                <div class="path-connector line-1" data-aos="zoom-in" data-aos-delay="200"></div>
+
+                 
+                <div class="path-step" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-icon-box">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <h4>2. Budgeting</h4>
+                    <p>Cost-effective procurement strategies and ROI planning.</p>
+                </div>
+
+                 
+                <div class="path-connector line-2" data-aos="zoom-in" data-aos-delay="400"></div>
+
+                 
+                <div class="path-step" data-aos="fade-up" data-aos-delay="500">
+                    <div class="step-icon-box">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <h4>3. Execution</h4>
+                    <p>Complete installation, testing, and final hospital handover.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+     
+    <section id="contracts" class="slanted-amc-section">
+
+         
+        <div class="slanted-image-wrapper" data-aos="fade-up" data-aos-duration="1200">
+             
+            <img src="./asset/h7.webp" alt="Biomedical Maintenance">
+             
+            <div class="slanted-overlay"></div>
+        </div>
+
+         
+        <div class="container slanted-container">
+            <div class="slanted-content" data-aos="fade-up" data-aos-duration="1000">
+
+                <h2 class="massive-heading">Protect Your <br><span class="text-orange">Investments</span></h2>
+                <p class="premium-para">Don't wait for a breakdown. Our Annual (AMC) and Comprehensive (CMC) Maintenance
+                    Contracts ensure your life-saving machines run seamlessly year after year with zero downtime.</p>
+
+                 
+                <div class="borderless-features">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-shield-halved teal-icon"></i>
+                        <div>
+                            <h4>Preventative Care</h4>
+                            <p>Routine quarterly tuning to catch issues early.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <i class="fa-solid fa-coins orange-icon"></i>
+                        <div>
+                            <h4>Zero Repair Bills</h4>
+                            <p>CMC plans cover all expensive OEM spare parts.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <i class="fa-solid fa-bolt teal-icon"></i>
+                        <div>
+                            <h4>Priority Response</h4>
+                            <p>Immediate 24/7 attention for contracted clients.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+     
+    <section id="cta" class="glowing-cta-section">
+
+         
+        <div class="cta-bg-image"></div>
+
+         
+        <div class="glow-orb"></div>
+
+        <div class="container cta-container" data-aos="zoom-in" data-aos-duration="1000">
+            <div class="cta-content text-center">
+
+                <i class="fa-solid fa-headset cta-giant-icon"></i>
+
+                <h2 class="cta-title">Need Immediate <span class="text-orange">Technical Support?</span></h2>
+                <p class="cta-desc">Our certified biomedical engineers are available 24/7. Schedule a service visit
+                    today and keep your healthcare facility running at peak performance without any downtime.</p>
+
+                 
+                <div class="cta-actions">
+                    <a href="404.html" class="btn-glow-solid">
+                        Book a Service <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="404.html" class="btn-outline-glow">
+                        <i class="fa-solid fa-phone"></i> Call Emergency
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+
+                 
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+                    <a href="index.html" class="logo-container">
+                        <img src="./asset/SkyBlue_Logo.webp" alt="Company Logo" class="logo-img">
+                    </a>
+                    <p class="footer-about">
+                        Empowering healthcare professionals with state-of-the-art medical technology. We deliver
+                        reliability, precision, and trust.
+                    </p>
+                     
+                    <div class="social-links">
+                        <a href="404.html" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="404.html" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="404.html" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="404.html" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                 
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About</a></li>
+                        <li><a href="services.html"><i class="fa-solid fa-chevron-right"></i> Services</a></li>
+                        <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+                        <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                 
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="300">
+                    <h3>Top Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="404.html"><i class="fa-solid fa-chevron-right"></i> Mobility Aids</a></li>
+                        <li><a href="404.html"><i class="fa-solid fa-chevron-right"></i> Surgical Tools</a></li>
+                        <li><a href="404.html"><i class="fa-solid fa-chevron-right"></i> Respiratory</a></li>
+                        <li><a href="404.html"><i class="fa-solid fa-chevron-right"></i> Diagnostics</a></li>
+                        <li><a href="404.html"><i class="fa-solid fa-chevron-right"></i> ICU Equipment</a></li>
+                    </ul>
+                </div>
+
+                 
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="400">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>123 Medical Hub, Health Avenue, Tech City, 636001.</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+1 800 123 4567<br>+1 800 987 6543</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>support@medigear.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+             
+            <div class="footer-bottom">
+                <p>&copy; 2026 MediGear Medical Equipments. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="404.html">Privacy Policy</a>
+                    <a href="404.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+ 
+            AOS.init({
+                duration: 800,
+                offset: 100,
+                once: true
+            });
+
+ 
+            gsap.from(".hero-content > *", {
+                x: -40,  
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: "power2.out",
+                delay: 0.2
+            });
+
+        });
+    </script>
+</body>
+
+</html>

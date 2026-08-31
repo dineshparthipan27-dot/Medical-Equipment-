@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>User</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --primary-blue-light: rgba(14, 165, 233, 0.1);
+            --accent-orange: #f97316;
+            --accent-orange-light: rgba(249, 115, 22, 0.1);
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            position: fixed;
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            z-index: 999;
+            backdrop-filter: blur(3px);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo i {
+            color: var(--accent-orange);
+        }
+
+        .close-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 25px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border-right: 4px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-blue-light);
+            color: var(--primary-blue);
+            border-right: 4px solid var(--primary-blue);
+        }
+
+
+        .sidebar-footer {
+            margin-top: auto;
+
+            padding: 20px 0 25px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .logout-link {
+            color: var(--danger);
+        }
+
+        .logout-link:hover {
+            background-color: var(--danger-light);
+            border-right-color: var(--danger);
+        }
+
+
+        .main-wrapper {
+            flex: 1;
+            margin-left: 260px;
+            min-height: 100vh;
+            width: calc(100% - 260px);
+        }
+
+        .top-navbar {
+            background: #ffffff;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 998;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .hamburger-btn {
+            display: none;
+            background: var(--bg-body);
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .page-heading {
+            font-size: 20px;
+            color: var(--text-dark);
+            font-weight: 800;
+        }
+
+        .client-welcome {
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: right;
+        }
+
+        .profile-role {
+            font-size: 12px;
+            color: var(--accent-orange);
+            font-weight: 800;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 700;
+            display: block;
+        }
+
+
+        .dashboard-view {
+            display: none;
+            padding: 35px;
+            flex-direction: column;
+            gap: 30px;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .dashboard-view.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .view-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .grid-3-cols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: 0;
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary-blue);
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+            transition: 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .metric-card.orange-accent {
+            border-top-color: var(--accent-orange);
+        }
+
+        .metric-card.green-accent {
+            border-top-color: var(--success);
+        }
+
+        .metric-info h4 {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .metric-info h2 {
+            font-size: 32px;
+            color: var(--text-dark);
+            font-weight: 800;
+        }
+
+        .metric-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--bg-body);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            color: var(--text-dark);
+        }
+
+        .content-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+        }
+
+        .grid-2-cols {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 320px;
+            width: 100%;
+        }
+
+
+        .notification-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .notification-list li {
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notification-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .notification-list strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .notification-list span {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            display: block;
+        }
+
+        .tracking-timeline {
+            margin-top: 15px;
+            border-left: 2px solid var(--border-color);
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .tracking-item {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .tracking-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-blue);
+            border: 2px solid #fff;
+            border-radius: 50%;
+        }
+
+        .tracking-item.completed::before {
+            background: var(--success);
+        }
+
+        .tracking-item.pending::before {
+            background: var(--border-color);
+        }
+
+        .tracking-item h4 {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .tracking-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            min-width: 650px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            background: var(--primary-blue);
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: var(--bg-body);
+        }
+
+        .data-table tr:hover {
+            background-color: #e0f2fe;
+        }
+
+        .data-table td {
+            color: var(--text-dark);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .badge.active {
+            background: var(--success-light);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .badge.pending {
+            background: var(--warning-light);
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .badge.error {
+            background: var(--danger-light);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .doc-card {
+            border: 1px solid var(--border-color);
+            padding: 25px 20px;
+            text-align: center;
+            transition: 0.3s;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .doc-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 4px 4px 0 rgba(14, 165, 233, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .doc-card i {
+            font-size: 35px;
+            color: var(--accent-orange);
+            margin-bottom: 15px;
+        }
+
+        .doc-card h4 {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 3px 3px 0 rgba(14, 165, 233, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .btn-solid,
+        .btn-outline {
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-solid {
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            text-transform: uppercase;
+            font-size: 14px;
+            box-shadow: 4px 4px 0 rgba(14, 165, 233, 0.2);
+        }
+
+        .btn-solid:hover {
+            background: var(--accent-orange);
+            box-shadow: 4px 4px 0 rgba(249, 115, 22, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-body);
+            border-color: var(--text-dark);
+        }
+
+        .alert-box {
+            padding: 15px;
+            background: var(--success-light);
+            color: var(--success);
+            font-weight: 700;
+            font-size: 14px;
+            border: 1px solid var(--success);
+            display: none;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .hamburger-btn,
+            .close-menu-btn {
+                display: block;
+            }
+
+            .grid-2-cols {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-navbar {
+                padding: 15px 20px;
+            }
+
+            .dashboard-view {
+                padding: 20px;
+            }
+
+            .profile-info {
+                display: none;
+            }
+
+            .page-heading {
+                font-size: 18px;
+            }
+
+            .content-panel {
+                padding: 20px;
+                overflow-x: scroll;
+            }
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+         
+        .error-msg {
+            color: var(--danger, #ef4444);
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 6px;
+            display: none;
+             
+        }
+
+         
+        .form-group select.input-error,
+        .form-group textarea.input-error {
+            border-color: var(--danger, #ef4444) !important;
+            background-color: rgba(239, 68, 68, 0.05) !important;
+             
+        }
+
+             .logo-img {
+            width: 150px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .logo-da {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo-da i {
+            font-size: 28px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-da">
+                    <img src="./asset/SkyBlue_Logo.webp" alt="Company Logo" class="logo-img">
+                </div>
+                <button class="close-menu-btn" id="closeSidebar"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <ul class="nav-menu">
+                <li><a class="nav-item active" data-target="dashboard-view"><i class="fa-solid fa-chart-line"></i> My
+                        Dashboard</a></li>
+                <li><a class="nav-item" data-target="service-view"><i class="fa-solid fa-headset"></i> Request
+                        Service</a></li>
+                <li><a class="nav-item" data-target="amc-view"><i class="fa-solid fa-calendar-check"></i> AMC &
+                        Maintenance</a></li>
+                <li><a class="nav-item" data-target="orders-view"><i class="fa-solid fa-truck-fast"></i> My Orders</a>
+                </li>
+                <li><a class="nav-item" data-target="resources-view"><i class="fa-solid fa-book-bookmark"></i> Resource
+                        Center</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="login.html" class="nav-item logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Logout</a>
+            </div>
+        </aside>
+
+
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="nav-left">
+                    <button class="hamburger-btn" id="openSidebar"><i class="fa-solid fa-bars-staggered"></i></button>
+                    <div class="heading-area">
+                        <h1 id="pageTitle" class="page-heading">My Dashboard <span class="client-welcome"
+                                id="welcomeText"></span></h1>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <div class="profile-area">
+                        <div class="profile-info">
+                            <span class="profile-role">Hospital Admin</span>
+                            <span class="profile-email" id="userEmailDisplay">client@hospital.com</span>
+                        </div>
+                        <i class="fa-solid fa-circle-user" style="color: var(--border-color); font-size: 40px;"></i>
+                    </div>
+                </div>
+            </header>
+
+
+            <div id="dashboard-view" class="dashboard-view active">
+                <section class="grid-3-cols animate-on-scroll">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Total Equipments</h4>
+                            <h2>14</h2>
+                        </div>
+                        <div class="metric-icon" style="color: var(--primary-blue);"><i
+                                class="fa-solid fa-microscope"></i></div>
+                    </div>
+                    <div class="metric-card green-accent">
+                        <div class="metric-info">
+                            <h4>Overall Uptime</h4>
+                            <h2>99.5%</h2>
+                        </div>
+                        <div class="metric-icon" style="color: var(--success);"><i
+                                class="fa-solid fa-arrow-trend-up"></i></div>
+                    </div>
+                    <div class="metric-card orange-accent">
+                        <div class="metric-info">
+                            <h4>Active Tickets</h4>
+                            <h2>02</h2>
+                        </div>
+                        <div class="metric-icon" style="color: var(--accent-orange);"><i class="fa-solid fa-ticket"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="grid-2-cols">
+                    <section class="content-panel animate-on-scroll">
+                        <h2 class="view-title"><i class="fa-solid fa-chart-area text-blue"></i> Machine Utilization
+                            (Hours/Week)</h2>
+                        <div class="chart-wrapper"><canvas id="utilizationChart"></canvas></div>
+                    </section>
+
+                    <section class="content-panel animate-on-scroll">
+                        <h2 class="view-title"><i class="fa-solid fa-bell text-orange"></i> Recent Notifications</h2>
+                        <ul class="notification-list">
+                            <li>
+                                <strong>Maintenance Scheduled</strong>
+                                <span>CT Scanner AMC is due on 15th Nov. Technician assigned.</span>
+                            </li>
+                            <li>
+                                <strong>Ticket Resolved (#TK-1092)</strong>
+                                <span>Ventilator O2 sensor replaced successfully by Eng. Ramesh.</span>
+                            </li>
+                            <li>
+                                <strong style="color: var(--primary-blue);">New Equipment Dispatched</strong>
+                                <span>Your order #ORD-445 (Defibrillators) is out for delivery.</span>
+                            </li>
+                            <li>
+                                <strong style="color: var(--danger);">Calibration Warning</strong>
+                                <span>ECG Machine Room 2 requires immediate calibration.</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">Quick Actions & Shortcuts</h2>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <a href="404.html" class="btn-solid">Raise New Ticket</a>
+                        <a href="404.html" class="btn-outline">Download Latest Invoice</a>
+                        <a href="404.html" class="btn-outline">View AMC Contracts</a>
+                        <a href="404.html" class="btn-outline">Contact Account Manager</a>
+                    </div>
+                </section>
+            </div>
+
+
+            <div id="service-view" class="dashboard-view">
+                <div class="grid-2-cols">
+                    <section class="content-panel animate-on-scroll">
+                        <h2 class="view-title">Raise a Support Ticket</h2>
+                        <form id="clientServiceForm" novalidate>
+                            <div id="ticketAlert" class="alert-box">
+                                <i class="fa-solid fa-check-circle"></i> Support Ticket Submitted Successfully!
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Equipment</label>
+                                <select id="equipSelect" required>
+                                    <option value="" selected disabled>Choose machine...</option>
+                                    <option>MRI Siemens Magnetom (ID: MR-01)</option>
+                                    <option>CT Scanner GE Optima (ID: CT-02)</option>
+                                    <option>Ventilator Unit 4 (ID: VN-04)</option>
+                                    <option>Patient Monitor Array (ID: PM-12)</option>
+                                </select>
+                                <div class="error-msg" id="equipError">Please select an equipment.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Issue Type</label>
+                                <select id="issueSelect" required>
+                                    <option value="" selected disabled>Select category...</option>
+                                    <option>Complete Breakdown (Emergency)</option>
+                                    <option>Software/Calibration Error</option>
+                                    <option>Part Replacement Needed</option>
+                                    <option>Routine Checkup Request</option>
+                                </select>
+                                <div class="error-msg" id="issueError">Please select an issue type.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Describe the Problem</label>
+                                <textarea id="descText" placeholder="Please provide error codes or exact symptoms..."
+                                    required></textarea>
+                                <div class="error-msg" id="descError">Description is required (Min 10 characters).</div>
+                            </div>
+
+                            <button type="submit" class="btn-solid" style="width: 100%;">
+                                Submit Request <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </section>
+
+                    <div style="display: flex; flex-direction: column; gap: 30px; overflow: hidden;">
+                        <section class="content-panel animate-on-scroll">
+                            <h2 class="view-title">Active Tickets</h2>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ticket ID</th>
+                                            <th>Machine</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>#TK-1105</strong></td>
+                                            <td>CT Scanner</td>
+                                            <td><span class="badge pending">Tech Assigned</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>#TK-1098</strong></td>
+                                            <td>Ultrasound</td>
+                                            <td><span class="badge pending">Pending Parts</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="content-panel animate-on-scroll"
+                            style="background: var(--bg-body); border-left: 4px solid var(--danger);">
+                            <h2 class="view-title" style="color: var(--danger);">Escalation Matrix</h2>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">If your issue is
+                                not resolved within 4 hours, contact:</p>
+                            <h4 style="font-size: 14px; margin-bottom: 5px;">Level 1: Support Desk</h4>
+                            <p style="font-size: 13px; font-weight: 700; margin-bottom: 15px;">+1-800-911-0001</p>
+                            <h4 style="font-size: 14px; margin-bottom: 5px;">Level 2: Zonal Manager</h4>
+                            <p style="font-size: 13px; font-weight: 700;">+1-800-911-0002</p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="amc-view" class="dashboard-view">
+                <section class="grid-3-cols animate-on-scroll">
+                    <div class="metric-card green-accent">
+                        <div class="metric-info">
+                            <h4>Active Contracts</h4>
+                            <h2>08</h2>
+                        </div>
+                        <div class="metric-icon" style="color: var(--success);"><i
+                                class="fa-solid fa-file-contract"></i></div>
+                    </div>
+                    <div class="metric-card orange-accent">
+                        <div class="metric-info">
+                            <h4>Expiring Soon (30 Days)</h4>
+                            <h2>02</h2>
+                        </div>
+                        <div class="metric-icon" style="color: var(--accent-orange);"><i
+                                class="fa-solid fa-triangle-exclamation"></i></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Total Serviced (YTD)</h4>
+                            <h2>24</h2>
+                        </div>
+                        <div class="metric-icon" style="color: var(--primary-blue);"><i
+                                class="fa-solid fa-screwdriver-wrench"></i></div>
+                    </div>
+                </section>
+
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">Upcoming Maintenance Schedule</h2>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Scheduled Date</th>
+                                    <th>Equipment</th>
+                                    <th>Contract Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>15 Nov 2024</strong></td>
+                                    <td>CT Scanner GE Optima</td>
+                                    <td>Comprehensive (CMC)</td>
+                                    <td><span class="badge pending">Upcoming</span></td>
+                                    <td><a href="404.html" class="btn-outline">Reschedule</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>28 Nov 2024</strong></td>
+                                    <td>MRI Siemens Magnetom</td>
+                                    <td>Annual (AMC)</td>
+                                    <td><span class="badge pending">Upcoming</span></td>
+                                    <td><a href="404.html" class="btn-outline">Reschedule</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>05 Dec 2024</strong></td>
+                                    <td>Ultrasound Unit B</td>
+                                    <td>Standard Warranty</td>
+                                    <td><span class="badge">Scheduled</span></td>
+                                    <td><a href="404.html" class="btn-outline">Reschedule</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">Past Service & Calibration Logs</h2>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date Completed</th>
+                                    <th>Equipment</th>
+                                    <th>Service Type</th>
+                                    <th>Engineer Attended</th>
+                                    <th>Service Report</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10 Oct 2024</td>
+                                    <td>Ventilator Unit 4</td>
+                                    <td>Repair (Sensor)</td>
+                                    <td>Ramesh K.</td>
+                                    <td><a href="404.html" class="btn-outline"><i class="fa-solid fa-download"></i> PDF
+                                            Report</a></td>
+                                </tr>
+                                <tr>
+                                    <td>05 Sep 2024</td>
+                                    <td>ECG Machine</td>
+                                    <td>Calibration</td>
+                                    <td>Anita P.</td>
+                                    <td><a href="404.html" class="btn-outline"><i class="fa-solid fa-download"></i> PDF
+                                            Report</a></td>
+                                </tr>
+                                <tr>
+                                    <td>22 Aug 2024</td>
+                                    <td>Defibrillators (x5)</td>
+                                    <td>Routine Preventive</td>
+                                    <td>Vikram S.</td>
+                                    <td><a href="404.html" class="btn-outline"><i class="fa-solid fa-download"></i> PDF
+                                            Report</a></td>
+                                </tr>
+                                <tr>
+                                    <td>15 Jul 2024</td>
+                                    <td>X-Ray Mobile Unit</td>
+                                    <td>Tube Replacement</td>
+                                    <td>Ramesh K.</td>
+                                    <td><a href="404.html" class="btn-outline"><i class="fa-solid fa-download"></i> PDF
+                                            Report</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+
+            <div id="orders-view" class="dashboard-view">
+                <div class="grid-2-cols">
+                    <section class="content-panel animate-on-scroll">
+                        <h2 class="view-title">Active Equipment Orders</h2>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Item Description</th>
+                                        <th>Est. Delivery</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>#ORD-5092</strong></td>
+                                        <td>2x Patient Monitors (Philips)</td>
+                                        <td>18 Nov 2024</td>
+                                        <td><span class="badge pending">In Transit</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#ORD-5110</strong></td>
+                                        <td>1x X-Ray Tube Replacement</td>
+                                        <td>20 Nov 2024</td>
+                                        <td><span class="badge">Processing</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#ORD-5145</strong></td>
+                                        <td>Surgical Lights Assembly</td>
+                                        <td>05 Dec 2024</td>
+                                        <td><span class="badge">Mfg. Stage</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="content-panel animate-on-scroll">
+                        <h2 class="view-title">Track Order #ORD-5092</h2>
+                        <div class="tracking-timeline">
+                            <div class="tracking-item completed">
+                                <h4>Order Placed</h4>
+                                <p>01 Nov 2024, 10:30 AM</p>
+                            </div>
+                            <div class="tracking-item completed">
+                                <h4>Quality Check Passed</h4>
+                                <p>05 Nov 2024, 02:15 PM</p>
+                            </div>
+                            <div class="tracking-item completed">
+                                <h4>Dispatched from Warehouse</h4>
+                                <p>10 Nov 2024, 09:00 AM</p>
+                            </div>
+                            <div class="tracking-item pending">
+                                <h4>Out for Delivery & Installation</h4>
+                                <p>Expected: 18 Nov 2024</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">Past Purchases (Invoice History)</h2>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Date</th>
+                                    <th>Equipment details</th>
+                                    <th>Amount</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-2024-089</td>
+                                    <td>12 Jan 2024</td>
+                                    <td>MRI Scanner Shielding Kit</td>
+                                    <td>$ 14,500</td>
+                                    <td><a href="404.html" class="btn-outline"><i class="fa-solid fa-file-invoice"></i>
+                                            Invoice</a></td>
+                                </tr>
+                                <tr>
+                                    <td>INV-2023-442</td>
+                                    <td>05 Nov 2023</td>
+                                    <td>Bulk Order: 10x Hospital Beds</td>
+                                    <td>$ 22,000</td>
+                                    <td><a href="404.html" class="btn-outline"><i class="fa-solid fa-file-invoice"></i>
+                                            Invoice</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+
+            <div id="resources-view" class="dashboard-view">
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">User Manuals & Operations Guides</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Download operation
+                        manuals for the machinery installed at your facility.</p>
+                    <div class="doc-grid">
+                        <div class="doc-card">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <h4>MRI Siemens V4 - Operations Guide</h4>
+                            <a href="404.html" class="btn-outline">Download PDF</a>
+                        </div>
+                        <div class="doc-card">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <h4>CT Scanner Maintenance Protocol</h4>
+                            <a href="404.html" class="btn-outline">Download PDF</a>
+                        </div>
+                        <div class="doc-card">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <h4>Ventilator Safety Troubleshooting</h4>
+                            <a href="404.html" class="btn-outline">Download PDF</a>
+                        </div>
+                        <div class="doc-card">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <h4>Defibrillator Daily Checklist</h4>
+                            <a href="404.html" class="btn-outline">Download PDF</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">Training & Video Tutorials</h2>
+                    <div class="doc-grid">
+                        <div class="doc-card" style="border-top: 3px solid var(--primary-blue);">
+                            <i class="fa-solid fa-circle-play" style="color: var(--primary-blue);"></i>
+                            <h4>Ventilator Setup & Calibration</h4>
+                            <a href="404.html" class="btn-outline">Watch Video</a>
+                        </div>
+                        <div class="doc-card" style="border-top: 3px solid var(--primary-blue);">
+                            <i class="fa-solid fa-circle-play" style="color: var(--primary-blue);"></i>
+                            <h4>Basic CPR Machine Handling</h4>
+                            <a href="404.html" class="btn-outline">Watch Video</a>
+                        </div>
+                        <div class="doc-card" style="border-top: 3px solid var(--primary-blue);">
+                            <i class="fa-solid fa-circle-play" style="color: var(--primary-blue);"></i>
+                            <h4>Daily Cleaning Protocol for CT</h4>
+                            <a href="404.html" class="btn-outline">Watch Video</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-panel animate-on-scroll">
+                    <h2 class="view-title">Compliance & Certifications</h2>
+                    <div class="doc-grid">
+                        <div class="doc-card" style="border-top: 3px solid var(--success);">
+                            <i class="fa-solid fa-certificate" style="color: var(--success);"></i>
+                            <h4>ISO 13485:2016 Certificate</h4>
+                            <a href="404.html" class="btn-outline">View Cert</a>
+                        </div>
+                        <div class="doc-card" style="border-top: 3px solid var(--success);">
+                            <i class="fa-solid fa-shield-halved" style="color: var(--success);"></i>
+                            <h4>FDA Approval Documents</h4>
+                            <a href="404.html" class="btn-outline">View Cert</a>
+                        </div>
+                        <div class="doc-card" style="border-top: 3px solid var(--success);">
+                            <i class="fa-solid fa-file-shield" style="color: var(--success);"></i>
+                            <h4>Annual AMC Compliance Report</h4>
+                            <a href="404.html" class="btn-outline">View Report</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+
+        const emailValue = localStorage.getItem("UserMail") || "dr.smith@cityhospital.com";
+        document.getElementById("userEmailDisplay").textContent = emailValue;
+
+        const extractedName = emailValue.split("@")[0];
+        const cleanName = extractedName.replace(/[._]/g, ' ');
+        const formattedName = cleanName.replace(/\b\w/g, l => l.toUpperCase());
+
+        const welcomeEl = document.getElementById("welcomeText");
+        if (welcomeEl) { welcomeEl.textContent = `| Welcome, ${formattedName} 👋`; }
+
+
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const openSidebarBtn = document.getElementById('openSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        function openSidebar() { sidebar.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeSidebar() { sidebar.classList.remove('active'); overlay.classList.remove('active'); document.body.style.overflow = 'auto'; }
+
+        openSidebarBtn.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+
+        const navItems = document.querySelectorAll('.nav-menu .nav-item');
+        const views = document.querySelectorAll('.dashboard-view');
+        const pageTitle = document.getElementById('pageTitle');
+
+        navItems.forEach(link => {
+            link.addEventListener('click', function () {
+                if (this.classList.contains('active')) return;
+                navItems.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                views.forEach(v => v.classList.remove('active'));
+
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+
+                let titleText = this.innerText.trim();
+                pageTitle.innerHTML = `${titleText} <span class="client-welcome">| Welcome, ${formattedName} 👋</span>`;
+
+                if (window.innerWidth <= 1024) closeSidebar();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                triggerAnimations();
+            });
+        });
+
+
+        const ctx = document.getElementById('utilizationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Machine Usage Hours',
+                    data: [320, 450, 410, 380],
+                    backgroundColor: '#0ea5e9',
+                    borderRadius: 0,
+                    barPercentage: 0.5
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } },
+                    x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                }
+            }
+        });
+
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+
+        function triggerAnimations() {
+            const animElements = document.querySelectorAll('.animate-on-scroll');
+            animElements.forEach(el => { el.classList.remove('visible'); observer.observe(el); });
+        }
+        triggerAnimations();
+
+
+        document.getElementById('clientServiceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const alertBox = document.getElementById('ticketAlert');
+            const orgText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+            setTimeout(() => {
+                alertBox.style.display = 'block';
+                btn.innerHTML = orgText;
+                this.reset();
+                setTimeout(() => alertBox.style.display = 'none', 4000);
+            }, 1000);
+        });
+
+        document.getElementById('clientServiceForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevents page reload
+
+ 
+            const equip = document.getElementById('equipSelect');
+            const issue = document.getElementById('issueSelect');
+            const desc = document.getElementById('descText');
+
+ 
+            const equipErr = document.getElementById('equipError');
+            const issueErr = document.getElementById('issueError');
+            const descErr = document.getElementById('descError');
+
+            let isValid = true;
+
+ 
+            equip.classList.remove('input-error');
+            issue.classList.remove('input-error');
+            desc.classList.remove('input-error');
+            equipErr.style.display = 'none';
+            issueErr.style.display = 'none';
+            descErr.style.display = 'none';
+
+ 
+            if (equip.value === "") {
+                equip.classList.add('input-error');
+                equipErr.style.display = 'block';
+                isValid = false;
+            }
+
+ 
+            if (issue.value === "") {
+                issue.classList.add('input-error');
+                issueErr.style.display = 'block';
+                isValid = false;
+            }
+
+ 
+            if (desc.value.trim().length < 10) {
+                desc.classList.add('input-error');
+                descErr.style.display = 'block';
+                isValid = false;
+            }
+
+ 
+            if (isValid) {
+                const btn = this.querySelector('button');
+                const alertBox = document.getElementById('ticketAlert');
+                const orgText = btn.innerHTML; // Save original button text
+
+ 
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+                btn.disabled = true; // Prevent multiple clicks
+
+ 
+                setTimeout(() => {
+                    alertBox.style.display = 'block';
+                    window.location.href = '404.html'
+                    btn.innerHTML = orgText; // Restore button text
+                    btn.disabled = false;
+                    this.reset(); // Clear the form
+
+ 
+                    setTimeout(() => alertBox.style.display = 'none', 4000);
+                }, 1500);
+            }
+        });
+
+ 
+        const formInputs = document.querySelectorAll('#clientServiceForm select, #clientServiceForm textarea');
+
+        formInputs.forEach(input => {
+            input.addEventListener('input', function () {
+ 
+                this.classList.remove('input-error');
+ 
+                const errDiv = this.parentElement.querySelector('.error-msg');
+                if (errDiv) errDiv.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>
