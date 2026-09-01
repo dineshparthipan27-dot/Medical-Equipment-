@@ -35,18 +35,18 @@
 
  
 .slide-1 {
-    background-image: url('./asset/h5.webp');
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./asset/h5.webp');
     animation-delay: 0s;
 }
 
 .slide-2 {
-    background-image: url('./asset/h6.webp');
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./asset/h6.webp');
     animation-delay: 6s;
      
 }
 
 .slide-3 {
-    background-image: url('./asset/h7.webp');
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./asset/h7.webp');
     animation-delay: 12s;
 }
 
@@ -110,7 +110,7 @@
 .hero-title {
     font-size: 3.5rem;
     font-weight: 700;
-    color: var(--text-dark, #334155);
+    color:   #f6f9fd;
     line-height: 1.2;
     margin-bottom: 20px;
 }
@@ -121,7 +121,7 @@
 
 .hero-description {
     font-size: 1.15rem;
-    color: var(--text-dark, #334155);
+    color:  #e6e6e6;
     margin-bottom: 35px;
     line-height: 1.6;
     font-weight: 500;
