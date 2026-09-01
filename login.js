@@ -91,7 +91,7 @@ loginForm.addEventListener("submit", (e) => {
  
     setTimeout(() => {
         if (role === "admin") window.location.href = "admin.html";
-        else window.location.href = "user.html"; // Redirects to our new user dashboard
+        else window.location.href = "user.html"; 
     }, 1500);
 });
 

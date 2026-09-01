@@ -550,3 +550,9 @@ body {
 .ai-logo-text span {
     color: var(--primary-color);
 }
+
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
