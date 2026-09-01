@@ -35,18 +35,18 @@
 
  
 .slide-1 {
-    background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920&auto=format&fit=crop');
+    background-image: url('./asset/h5.webp');
     animation-delay: 0s;
 }
 
 .slide-2 {
-    background-image: url('https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1920&auto=format&fit=crop');
+    background-image: url('./asset/h6.webp');
     animation-delay: 6s;
      
 }
 
 .slide-3 {
-    background-image: url('https://images.unsplash.com/photo-1504439468489-c8920d786a2b?q=80&w=1920&auto=format&fit=crop');
+    background-image: url('./asset/h7.webp');
     animation-delay: 12s;
 }
 
@@ -1468,7 +1468,7 @@
 
 .brand-logo span {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 800; 
     color: var(--text-dark, #334155);
     letter-spacing: -0.5px;
     transition: all 0.4s ease;
