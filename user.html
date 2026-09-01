@@ -693,25 +693,25 @@
             text-decoration: none;
         }
 
-         
+
         .error-msg {
             color: var(--danger, #ef4444);
             font-size: 12px;
             font-weight: 700;
             margin-top: 6px;
             display: none;
-             
+
         }
 
-         
+
         .form-group select.input-error,
         .form-group textarea.input-error {
             border-color: var(--danger, #ef4444) !important;
             background-color: rgba(239, 68, 68, 0.05) !important;
-             
+
         }
 
-             .logo-img {
+        .logo-img {
             width: 150px;
         }
 
@@ -732,6 +732,9 @@
         .logo-da i {
             font-size: 28px;
         }
+
+
+        
     </style>
 </head>
 
@@ -1326,37 +1329,22 @@
 
 
         document.getElementById('clientServiceForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const btn = this.querySelector('button');
-            const alertBox = document.getElementById('ticketAlert');
-            const orgText = btn.innerHTML;
+            e.preventDefault(); 
 
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
-
-            setTimeout(() => {
-                alertBox.style.display = 'block';
-                btn.innerHTML = orgText;
-                this.reset();
-                setTimeout(() => alertBox.style.display = 'none', 4000);
-            }, 1000);
-        });
-
-        document.getElementById('clientServiceForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevents page reload
-
- 
+            
             const equip = document.getElementById('equipSelect');
             const issue = document.getElementById('issueSelect');
             const desc = document.getElementById('descText');
 
- 
+          
             const equipErr = document.getElementById('equipError');
             const issueErr = document.getElementById('issueError');
             const descErr = document.getElementById('descError');
+            const alertBox = document.getElementById('ticketAlert');
 
             let isValid = true;
 
- 
+            
             equip.classList.remove('input-error');
             issue.classList.remove('input-error');
             desc.classList.remove('input-error');
@@ -1364,63 +1352,66 @@
             issueErr.style.display = 'none';
             descErr.style.display = 'none';
 
- 
+            
             if (equip.value === "") {
                 equip.classList.add('input-error');
-                equipErr.style.display = 'block';
+                equipErr.style.display = 'block'; 
                 isValid = false;
             }
 
- 
+            
             if (issue.value === "") {
                 issue.classList.add('input-error');
                 issueErr.style.display = 'block';
                 isValid = false;
             }
 
- 
+          
             if (desc.value.trim().length < 10) {
                 desc.classList.add('input-error');
                 descErr.style.display = 'block';
                 isValid = false;
             }
 
- 
+           
             if (isValid) {
-                const btn = this.querySelector('button');
-                const alertBox = document.getElementById('ticketAlert');
-                const orgText = btn.innerHTML; // Save original button text
+                const btn = this.querySelector('button[type="submit"]');
+                const orgText = btn.innerHTML;
 
- 
+                
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
-                btn.disabled = true; // Prevent multiple clicks
+                btn.disabled = true;
 
- 
+                
                 setTimeout(() => {
-                    alertBox.style.display = 'block';
-                    window.location.href = '404.html'
-                    btn.innerHTML = orgText; // Restore button text
+                    alertBox.style.display = 'block'; 
+                    btn.innerHTML = orgText;
                     btn.disabled = false;
-                    this.reset(); // Clear the form
+                    window.location.href = '404.html'
+                    this.reset(); 
 
- 
+                  
                     setTimeout(() => alertBox.style.display = 'none', 4000);
                 }, 1500);
             }
         });
 
- 
-        const formInputs = document.querySelectorAll('#clientServiceForm select, #clientServiceForm textarea');
+        
+        const serviceInputs = document.querySelectorAll('#clientServiceForm select, #clientServiceForm textarea');
 
-        formInputs.forEach(input => {
+        serviceInputs.forEach(input => {
             input.addEventListener('input', function () {
- 
                 this.classList.remove('input-error');
- 
                 const errDiv = this.parentElement.querySelector('.error-msg');
                 if (errDiv) errDiv.style.display = 'none';
             });
         });
+
+
+
+
+
+
     </script>
 </body>
 
